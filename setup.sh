@@ -1,14 +1,30 @@
 #!/bin/bash
 
-echo "Setting up"
+echo "Setting up..."
+
+for program in cmake clang ninja clang-format clang-tidy; do
+    if ! command -v $program &> /dev/null; then
+        echo "Error: $program not found, install it first and then re-run the script."
+        exit 1
+    fi
+done
+
+
+rm -rf deps_build
+rm -rf deps_install
 
 mkdir -p deps_build
 mkdir -p deps_install
+
+export CXX=$(which clang++)
+export CC=$(which clang)
 export LIB_BUILD_PREFIX="$(pwd)/deps_build"
 export LIB_INSTALL_PREFIX="$(pwd)/deps_install"
 
-if [[ "$1" == "-p" ]]; then
+if [[ "${1-s}" == "-p" ]]; then
     echo "Building in parallel."
+    set -euxo pipefail
+
     pids=()
 
     ./build_boost.sh &
@@ -31,26 +47,35 @@ if [[ "$1" == "-p" ]]; then
     fi
 else
     echo "Building sequentially."
+    set -euxo pipefail
+
     ./build_boost.sh && ./build_google_test_benchmark.sh && ./build_fmt.sh
 fi
 
-echo ""
-echo "Dependencies installed and compiled. Building..."
-echo ""
+set +x
 
+echo "
+Dependencies installed and compiled. Building debug targets...
+"
+
+rm -rf build
 mkdir -p build
 cmake -S . -B build -GNinja
 ninja -C build
 ln -fs build/compile_commands.json .
 
-echo ""
-echo "Build complete!"
-echo ""
+echo "
+Build complete
+"
 
-echo "Persist the following in your current shell: "
-echo ""
-echo "    export LIB_INSTALL_PREFIX=$(pwd)/deps_install"
-echo ""
-echo "Run the tests: ./build/src/test"
-echo ""
-echo "Bye :)"
+echo "
+Persist the following in your current shell (or use direnv with the ./.envrc):
+
+    export CXX=$(which clang++)
+    export CC=$(which clang)
+    export LIB_INSTALL_PREFIX=$(pwd)/deps_install
+    export LIB_BUILD_PREFIX=$(pwd)/deps_install
+
+Run the tests: ./build/src/test
+
+Bye :)"
