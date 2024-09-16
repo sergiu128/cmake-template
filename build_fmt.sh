@@ -23,11 +23,14 @@ function build() {
 
     rm -rf build
     mkdir build
-    cd build
-    cmake -DFMT_TEST=OFF -DCMAKE_BUILD_TYPE=${1} -DCMAKE_INSTALL_PREFIX=${LIB_FMT_INSTALL_PREFIX} ../
-    make -j 20
-    make install
-    cd ../
+    
+    cmake -GNinja \
+          -DFMT_TEST=OFF \
+          -DCMAKE_BUILD_TYPE=${1} \
+          -DCMAKE_INSTALL_LIBDIR=lib \
+          -DCMAKE_INSTALL_PREFIX=${LIB_FMT_INSTALL_PREFIX} \
+          -S . -B "build"
+    cmake --build "build" --config ${1} --target install
 }
 
 build Debug

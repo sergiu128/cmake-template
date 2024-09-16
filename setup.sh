@@ -10,7 +10,6 @@ for program in cmake clang ninja clang-format clang-tidy; do
 done
 
 
-rm -rf deps_build
 rm -rf deps_install
 
 mkdir -p deps_build

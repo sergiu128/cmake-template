@@ -80,23 +80,23 @@ done
 ./bootstrap.sh --with-toolset=clang --prefix="${LIB_BOOST_INSTALL_PREFIX}"
 
 function build_boost() {
-./b2 clean
-./b2 headers
-./b2 install -q -a \
-      --prefix="${LIB_BOOST_INSTALL_PREFIX}" \
-      --build-type=minimal \
-      --layout=system \
-      --buildid=${1} \
-      --disable-icu \
-      --with-regex \
-      --with-program_options \
-      --with-container \
-      toolset=${LIB_BOOST_TOOLSET} \
-      stdlib=native \
-      cxxflags="-std=c++20" \
-      link=static runtime-link=static \
-      threading=single address-model=64 \
-      variant=${1}
+    ./b2 clean
+    ./b2 headers
+    ./b2 install -q -a \
+         --prefix="${LIB_BOOST_INSTALL_PREFIX}" \
+         --build-type=minimal \
+         --layout=system \
+         --buildid=${1} \
+         --disable-icu \
+         --with-regex \
+         --with-program_options \
+         --with-container \
+         toolset=${LIB_BOOST_TOOLSET} \
+         stdlib=native \
+         cxxflags="-std=c++20" \
+         link=static runtime-link=static \
+         threading=single address-model=64 \
+         variant=${1}
 }
 
 build_boost debug

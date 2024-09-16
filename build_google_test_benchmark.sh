@@ -34,44 +34,54 @@ function build_benchmark() {
     cd "${LIB_TEST_BENCHMARK_BUILD_PREFIX}/benchmark"
     rm -rf build
     mkdir -p build
-    cmake -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC} \
-        -DCMAKE_CXX_STANDARD=20 -DCMAKE_CXX_STANDARD_REQUIRED=ON \
-        -DCMAKE_INSTALL_PREFIX=${LIB_TEST_BENCHMARK_INSTALL_PREFIX} \
-        -DCMAKE_BUILD_TYPE="${1}" \
-        -DBENCHMARK_ENABLE_GTEST_TESTS=ON \
-        -DBENCHMARK_DOWNLOAD_DEPENDENCIES=OFF \
-        -S . -B "build"
-            cmake --build "build" --config ${1} --target install -- -j 20
-        }
+    cmake -GNinja \
+          -DCMAKE_CXX_COMPILER=${CXX} \
+          -DCMAKE_C_COMPILER=${CC} \
+          -DCMAKE_CXX_STANDARD=20 \
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+          -DCMAKE_INSTALL_PREFIX=${LIB_TEST_BENCHMARK_INSTALL_PREFIX} \
+          -DCMAKE_BUILD_TYPE="${1}" \
+          -DCMAKE_INSTALL_LIBDIR=lib \
+          -DBENCHMARK_ENABLE_GTEST_TESTS=ON \
+          -DBENCHMARK_DOWNLOAD_DEPENDENCIES=OFF \
+          -S . -B "build"
+    cmake --build "build" --config ${1} --target install
+}
 
-        function build_test() {
-            echo "Building google_test target=${1}."
+function build_test() {
+    echo "Building google_test target=${1}."
 
-            cd "${LIB_TEST_BENCHMARK_BUILD_PREFIX}/benchmark/googletest"
-            rm -rf build
-            mkdir -p build
-            cmake -DCMAKE_CXX_COMPILER=${CXX} -DCMAKE_C_COMPILER=${CC} \
-                -DCMAKE_CXX_STANDARD=20 -DCMAKE_CXX_STANDARD_REQUIRED=ON \
-                -DCMAKE_INSTALL_PREFIX=${LIB_TEST_BENCHMARK_INSTALL_PREFIX} \
-                -DCMAKE_BUILD_TYPE="${1}"\
-                -S . -B "build"
-                            cmake --build "build" --config ${1} --target install -- -j 20
-                        }
+    cd "${LIB_TEST_BENCHMARK_BUILD_PREFIX}/benchmark/googletest"
+    rm -rf build
+    mkdir -p build
+    cmake -GNinja \
+          -DCMAKE_CXX_COMPILER=${CXX} \
+          -DCMAKE_C_COMPILER=${CC} \
+          -DCMAKE_CXX_STANDARD=20 \
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+          -DCMAKE_INSTALL_PREFIX=${LIB_TEST_BENCHMARK_INSTALL_PREFIX} \
+          -DCMAKE_INSTALL_LIBDIR=lib \
+          -DCMAKE_BUILD_TYPE="${1}" \
+          -S . -B "build"
+    cmake --build "build" --config ${1} --target install
+}
 
-                        build_benchmark Debug
-                        build_test Debug
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark-debug.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main-debug.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock-debug.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main-debug.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest-debug.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main-debug.a
+build_benchmark Debug
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark-debug.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main-debug.a
 
-                        build_benchmark Release
-                        build_test Release
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark-release.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main-release.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock-release.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main-release.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest-release.a
-                        mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main-release.a
+build_benchmark Release
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark-release.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libbenchmark_main-release.a
+
+build_test Debug
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock-debug.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main-debug.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest-debug.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main-debug.a
+
+build_test Release
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock-release.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgmock_main-release.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest-release.a
+mv ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main.a ${LIB_TEST_BENCHMARK_INSTALL_PREFIX}/lib/libgtest_main-release.a
