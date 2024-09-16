@@ -6,7 +6,7 @@ set -exo pipefail
 LIB_INSTALL_PREFIX=${LIB_INSTALL_PREFIX:-/usr/local}
 LIB_BUILD_PREFIX=${LIB_BUILD_PREFIX:-/tmp}
 
-LIB_FMT_VERSION=10.1.1
+LIB_FMT_VERSION=11.0.2
 LIB_FMT_INSTALL_PREFIX=${LIB_FMT_INSTALL_PREFIX:-${LIB_INSTALL_PREFIX}}
 LIB_FMT_BUILD_PREFIX=${LIB_FMT_BUILD_PREFIX:-${LIB_BUILD_PREFIX}}
 
@@ -16,6 +16,7 @@ if [ ! -d fmt ]; then
 fi
 
 cd fmt
+git fetch
 git checkout "${LIB_FMT_VERSION}"
 
 function build() {
@@ -24,7 +25,8 @@ function build() {
     rm -rf build
     mkdir build
     
-    cmake -GNinja \
+    cmake --no-warn-unused-cli \
+          -GNinja \
           -DFMT_TEST=OFF \
           -DCMAKE_BUILD_TYPE=${1} \
           -DCMAKE_INSTALL_LIBDIR=lib \

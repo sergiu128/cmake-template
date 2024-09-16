@@ -6,7 +6,7 @@ set -exo pipefail
 LIB_INSTALL_PREFIX=${LIB_INSTALL_PREFIX:-/usr/local}
 LIB_BUILD_PREFIX=${LIB_BUILD_PREFIX:-/tmp}
 
-LIB_BOOST_VERSION=1.83.0
+LIB_BOOST_VERSION=1.86.0
 LIB_BOOST_INSTALL_PREFIX=${LIB_BOOST_INSTALL_PREFIX:-${LIB_INSTALL_PREFIX}}
 LIB_BOOST_BUILD_PREFIX=${LIB_BOOST_BUILD_PREFIX:-${LIB_BUILD_PREFIX}}
 
@@ -20,6 +20,7 @@ if [ ! -d boost ]; then
 fi
 
 cd boost
+git fetch
 git checkout "boost-$LIB_BOOST_VERSION"
 
 # Everything below libs/core should also appear in ./b2 install below
