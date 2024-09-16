@@ -29,7 +29,10 @@ if [[ "${1-s}" == "-p" ]]; then
     ./build_boost.sh &
     pids+=($!)
 
-    ./build_google_test_benchmark.sh &
+    ./build_benchmark.sh &
+    pids+=($!)
+
+    ./build_gtest.sh &
     pids+=($!)
 
     ./build_fmt.sh &
@@ -48,7 +51,7 @@ else
     echo "Building sequentially."
     set -euxo pipefail
 
-    ./build_boost.sh && ./build_google_test_benchmark.sh && ./build_fmt.sh
+    ./build_boost.sh && ./build_benchmark.sh && ./build_gtest.sh && ./build_fmt.sh
 fi
 
 set +x

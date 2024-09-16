@@ -21,7 +21,7 @@ macro(link_benchmarks LIBS_DEBUG LIBS_RELEASE LIBS_BOTH)
         endforeach ()
 
         target_link_libraries("${BM_NAME}" PRIVATE
-                debug google_benchmark_debug
-                optimized google_benchmark_release)
+                debug benchmark_debug
+                optimized benchmark_release)
     endforeach ()
 endmacro()
