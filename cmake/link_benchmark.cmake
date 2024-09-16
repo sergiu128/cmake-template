@@ -1,4 +1,4 @@
-macro(link_benchmarks LIBS_DEBUG LIBS_RELEASE LIBS_BOTH)
+function (link_benchmarks LIBS_DEBUG LIBS_RELEASE LIBS_BOTH)
     file(GLOB BM_SOURCES "*.bm.cpp")
     foreach (BM_SOURCE ${BM_SOURCES})
         get_filename_component(BM_NAME ${BM_SOURCE} NAME_WLE)
@@ -24,4 +24,4 @@ macro(link_benchmarks LIBS_DEBUG LIBS_RELEASE LIBS_BOTH)
                 debug benchmark_debug
                 optimized benchmark_release)
     endforeach ()
-endmacro()
+endfunction ()

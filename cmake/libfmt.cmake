@@ -1,4 +1,4 @@
-macro(setup_fmt)
+function (setup_fmt)
     if (DEFINED ENV{LIB_FMT_INSTALL_PREFIX})
         set(LIB_FMT_INSTALL_PREFIX "$ENV{LIB_FMT_INSTALL_PREFIX}" CACHE PATH "Location of fmt for the local build")
     elseif (DEFINED ENV{LIB_INSTALL_PREFIX})
@@ -27,4 +27,4 @@ macro(setup_fmt)
         "${LIB_FMT_LIB_PREFIX}/libfmt-release.a")
 
     message("libfmt: setup successful")
-endmacro()
+endfunction()

@@ -1,4 +1,4 @@
-macro(add_boost_library libname)
+function(add_boost_library libname)
     string(TOUPPER ${libname} libname_upper)
 
     message("libboost: linking ${libname}")
@@ -14,7 +14,7 @@ macro(add_boost_library libname)
             IMPORTED_LOCATION "${LIB_BOOST_LIB_PREFIX}/libboost_${libname}-release.a"
             INTERFACE_COMPILE_DEFINITIONS "HAVE_BOOST_${libname_upper}_RELEASE")
     list(APPEND BOOST_LIBS_RELEASE "boost_${libname}_release")
-endmacro()
+endfunction ()
 
 function(setup_boost)
     if (DEFINED ENV{LIB_BOOST_INSTALL_PREFIX})

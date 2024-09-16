@@ -45,3 +45,7 @@ To make this your own, replace all occurences of `TEMPLATE` with your project's 
   variables. Check `build_boost.sh` and `cmake/libboost.cmake` for examples. If
   the `LIB_INSTALL_*_PREFIX` and `LIB_BUILD_*_PREFIX` are not set, libraries are
   built in `/tmp` and installed in `/usr/local`.
+  
+## Misc
+- linking with mold: `-DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=mold" -DCMAKE_SHARED_LINKER_FLAGS="-fuse-ld=mold"`
+- checking toolchain: `readelf -p .comment src/test`
