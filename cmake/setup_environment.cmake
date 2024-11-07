@@ -35,6 +35,7 @@ function(config_compiler)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
     set(CMAKE_CXX_STANDARD 20)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    set(CMAKE_LINKER_TYPE LLD)
 
     add_compile_options(-Wall -Wextra -Wno-c99-extensions
         -Wno-missing-field-initializers -Werror=format -std=c++20)
