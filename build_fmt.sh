@@ -31,6 +31,11 @@ function build() {
           -DCMAKE_BUILD_TYPE=${1} \
           -DCMAKE_INSTALL_LIBDIR=lib \
           -DCMAKE_INSTALL_PREFIX=${LIB_FMT_INSTALL_PREFIX} \
+          -DCMAKE_INSTALL_LIBDIR=lib \
+          -DCMAKE_CXX_COMPILER=${CXX} \
+          -DCMAKE_C_COMPILER=${CC} \
+          -DCMAKE_CXX_STANDARD=20 \
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON \
           -S . -B "build"
     cmake --build "build" --config ${1} --target install
 }
