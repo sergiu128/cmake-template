@@ -4,7 +4,7 @@ This is a `cmake` project template that makes it easy to quickly start working o
 
 ## Getting started
 
-Run `./setup.sh`. This will install all the dependencies and build all the targets in Debug mode.
+Easiest is with `nix`. Install it, invoke `nix-shell` and in that shell run `./setup.sh`.
 
 Building Release targets:
 ```
@@ -12,6 +12,8 @@ mkdir build_rel
 cd build_rel
 cmake -DCMAKE_BUILD_TYPE=Release ../
 ```
+
+`CMAKE_BUILD_TYPE` can be `Debug`(default)/`Release`.
 
 To make this your own, replace all occurences of `TEMPLATE` with your project's name.
 

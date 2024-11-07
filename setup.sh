@@ -70,14 +70,16 @@ echo "
 Build complete
 "
 
-echo "
-Persist the following in your current shell (or use direnv with the ./.envrc):
+if [[ -z ${USES_NIX} ]]; then
+    echo "
+    Persist the following in your current shell (or use direnv with the ./.envrc):
 
-    export CXX=$(which clang++)
-    export CC=$(which clang)
-    export LIB_INSTALL_PREFIX=$(pwd)/deps_install
-    export LIB_BUILD_PREFIX=$(pwd)/deps_install
+        export CXX=$(which clang++)
+        export CC=$(which clang)
+        export LIB_INSTALL_PREFIX=$(pwd)/deps_install
+        export LIB_BUILD_PREFIX=$(pwd)/deps_install
 
-Run the tests: ./build/src/test
+    Run the tests: ./build/src/test"
+fi
 
-Bye :)"
+echo "Bye :)"

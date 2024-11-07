@@ -1,0 +1,26 @@
+let
+  nixpkgs = fetchTarball "https://github.com/NixOS/nixpkgs/tarball/nixos-24.05";
+  pkgs = import nixpkgs { config = {}; overlays = []; };
+in
+
+pkgs.mkShellNoCC {
+  packages = with pkgs; [
+    gnumake
+    zlib
+    clang-tools
+    clang_18
+    llvm_18
+    lld_18
+    cmake
+    ninja
+  ];
+
+  shellHook = ''
+    export CXX=clang++
+    export CC=clang
+    export LIB_BUILD_PREFIX=$(pwd)/deps_build
+    export LIB_INSTALL_PREFIX=$(pwd)/deps_install
+    export USES_NIX=1
+  '';
+}
+
