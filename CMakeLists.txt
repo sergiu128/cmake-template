@@ -8,6 +8,7 @@ setup_environment()
 # libraries
 add_subdirectory("lib")
 add_subdirectory("util")
+add_subdirectory("sbe")
 
 # binaries
 add_subdirectory("src")

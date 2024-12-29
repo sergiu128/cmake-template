@@ -13,6 +13,7 @@ pkgs.mkShellNoCC {
     lld_19
     cmake
     ninja
+    jre
   ];
 
   shellHook = ''

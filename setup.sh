@@ -37,6 +37,9 @@ if [[ "${1-s}" == "-p" ]]; then
 
     ./build_fmt.sh &
     pids+=($!)
+
+    ./build_sbe.sh &
+    pids+=($!)
     
     exit_code=0
     for pid in "${pids[@]}"; do
@@ -51,7 +54,7 @@ else
     echo "Building sequentially."
     set -euxo pipefail
 
-    ./build_boost.sh && ./build_benchmark.sh && ./build_gtest.sh && ./build_fmt.sh
+    ./build_boost.sh && ./build_benchmark.sh && ./build_gtest.sh && ./build_fmt.sh && ./build_sbe.sh
 fi
 
 set +x
