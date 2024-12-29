@@ -22,6 +22,7 @@ pkgs.mkShellNoCC {
     export LIB_BUILD_PREFIX=$(pwd)/deps_build
     export LIB_INSTALL_PREFIX=$(pwd)/deps_install
     export USES_NIX=1
+    export CMAKE_GENERATOR=Ninja
   '';
 }
 
