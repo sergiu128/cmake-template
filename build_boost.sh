@@ -6,7 +6,7 @@ set -exo pipefail
 LIB_INSTALL_PREFIX=${LIB_INSTALL_PREFIX:-/usr/local}
 LIB_BUILD_PREFIX=${LIB_BUILD_PREFIX:-/tmp}
 
-LIB_BOOST_VERSION=1.86.0
+LIB_BOOST_VERSION=1.87.0
 LIB_BOOST_INSTALL_PREFIX=${LIB_BOOST_INSTALL_PREFIX:-${LIB_INSTALL_PREFIX}}
 LIB_BOOST_BUILD_PREFIX=${LIB_BOOST_BUILD_PREFIX:-${LIB_BUILD_PREFIX}}
 
@@ -94,7 +94,7 @@ function build_boost() {
          --with-container \
          toolset=${LIB_BOOST_TOOLSET} \
          stdlib=native \
-         cxxflags="-std=c++20" \
+         cxxflags="-std=c++23" \
          link=static runtime-link=static \
          threading=single address-model=64 \
          variant=${1}

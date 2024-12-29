@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "fmt is deprecated in favor of std::format introduced in C++23"
+exit 0
+
 set -exo pipefail
 
 # install/build prefix common to all libs

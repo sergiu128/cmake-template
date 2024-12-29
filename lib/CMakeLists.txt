@@ -6,9 +6,7 @@ add_library(template_lib STATIC ${SOURCES})
 target_include_directories(template_lib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(template_lib PUBLIC
     debug boost_debug
-    debug fmt_debug
-    optimized boost_release
-    optimized fmt_release)
+    optimized boost_release)
 
 add_library(template::lib ALIAS template_lib)
 

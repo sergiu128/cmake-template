@@ -33,12 +33,11 @@ function(config_compiler)
     endif()
 
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
-    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_CXX_STANDARD 23)
     set(CMAKE_CXX_STANDARD_REQUIRED ON)
     set(CMAKE_LINKER_TYPE LLD)
 
-    add_compile_options(-Wall -Wextra -Wno-c99-extensions
-        -Wno-missing-field-initializers -Werror=format -std=c++20)
+    add_compile_options(-Wall -Wextra -Wno-c99-extensions -Wno-missing-field-initializers -Werror=format)
 
     message("Configured compiler. Using ${CMAKE_CXX_COMPILER_ID} \
 ${CMAKE_CXX_COMPILER_VERSION}")
@@ -47,7 +46,7 @@ endfunction()
 include("cmake/libbenchmark.cmake")
 include("cmake/libgtest.cmake")
 include("cmake/libboost.cmake")
-include("cmake/libfmt.cmake")
+#include("cmake/libfmt.cmake") # deprecated in favor of C++23's std::format
 
 function(load_libs)
     message("-----------------------------libs-----------------------------")
@@ -57,8 +56,8 @@ function(load_libs)
     message("--------------------------------------------------------------")
     setup_boost()
     message("--------------------------------------------------------------")
-    setup_fmt()
-    message("--------------------------------------------------------------")
+    #setup_fmt()
+    #message("--------------------------------------------------------------")
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     message("-----------------------------libs-----------------------------")

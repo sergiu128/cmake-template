@@ -27,7 +27,7 @@ function build_gtest() {
           -GNinja \
           -DCMAKE_CXX_COMPILER=${CXX} \
           -DCMAKE_C_COMPILER=${CC} \
-          -DCMAKE_CXX_STANDARD=20 \
+          -DCMAKE_CXX_STANDARD=23 \
           -DCMAKE_CXX_STANDARD_REQUIRED=ON \
           -DCMAKE_INSTALL_PREFIX=${LIB_GTEST_INSTALL_PREFIX} \
           -DCMAKE_INSTALL_LIBDIR=lib \
