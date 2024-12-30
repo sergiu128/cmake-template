@@ -19,28 +19,31 @@ endfunction()
 function(config_compiler)
     message("Configuring compiler...")
 
-    if ("${CMAKE_BUILD_TYPE}" STREQUAL "" OR
-            "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-        message("Building Debug target.")
-        set(CMAKE_BUILD_TYPE "Debug")
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
+    if ("${CMAKE_BUILD_TYPE}" STREQUAL "" OR "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+        set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Debug build, no optimizations" FORCE)
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g" CACHE STRING "Debug build flags" FORCE)
+        message("Building Debug target. Flags: ${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
     elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-        message("Building Release target.")
-        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON) # enable LTO
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "Enables link time optimization" FORCE)
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g" CACHE STRING "Release build flags" FORCE)
+        message("Building Release target. Flags: ${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
     else ()
         message(FATAL_ERROR "Invalid build type: ${CMAKE_BUILD_TYPE}")
     endif()
 
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE INTERNAL "")
-    set(CMAKE_CXX_STANDARD 23)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_LINKER_TYPE LLD)
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Export compile definitions to make clangd(LSP) work." FORCE)
+    set(CMAKE_CXX_EXTENSIONS OFF CACHE BOOL "We don't use GNU's C++ extensions." FORCE)
+    set(CMAKE_CXX_STANDARD 23 CACHE STRING "We use C++23." FORCE)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "We error if the compiler does not support C++23." FORCE)
 
-    add_compile_options(-Wall -Wextra -Wno-c99-extensions -Wno-missing-field-initializers -Werror=format)
+    if (DEFINED ENV{USES_NIX})
+        message("On nix, linking with lld")
+        set(CMAKE_LINKER_TYPE LLD CACHE STRING "Use lld to link on nix." FORCE)
+    endif()
 
-    message("Configured compiler. Using ${CMAKE_CXX_COMPILER_ID} \
-${CMAKE_CXX_COMPILER_VERSION}")
+    add_compile_options(-Wall -Wextra -Werror -Wpedantic)
+
+    message("Configured compiler. Using ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 endfunction()
 
 include("cmake/libbenchmark.cmake")
