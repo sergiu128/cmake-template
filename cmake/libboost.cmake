@@ -7,13 +7,13 @@ function(add_boost_library libname)
     set_target_properties(boost_${libname}_debug PROPERTIES
             IMPORTED_LOCATION "${LIB_BOOST_LIB_PREFIX}/libboost_${libname}-debug.a"
             INTERFACE_COMPILE_DEFINITIONS "HAVE_BOOST_${libname_upper}_DEBUG")
-    list(APPEND BOOST_LIBS_DEBUG "boost_${libname}_debug")
+    set(BOOST_LIBS_DEBUG "${BOOST_LIBS_DEBUG};boost_${libname}_debug" PARENT_SCOPE)    
 
     add_library(boost_${libname}_release STATIC IMPORTED GLOBAL)
     set_target_properties(boost_${libname}_release PROPERTIES
             IMPORTED_LOCATION "${LIB_BOOST_LIB_PREFIX}/libboost_${libname}-release.a"
             INTERFACE_COMPILE_DEFINITIONS "HAVE_BOOST_${libname_upper}_RELEASE")
-    list(APPEND BOOST_LIBS_RELEASE "boost_${libname}_release")
+    set(BOOST_LIBS_RELEASE "${BOOST_LIBS_RELEASE};boost_${libname}_release" PARENT_SCOPE)    
 endfunction ()
 
 function(setup_boost)

@@ -66,6 +66,7 @@ Dependencies installed and compiled. Building debug targets...
 rm -rf build
 mkdir -p build
 cmake -S . -B build -GNinja
+ninja -C build sbe
 ninja -C build
 ln -fs build/compile_commands.json .
 
