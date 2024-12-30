@@ -3,7 +3,7 @@ let
   pkgs = import nixpkgs { config = {}; overlays = []; };
 in
 
-pkgs.mkShellNoCC {
+pkgs.mkShell {
   packages = with pkgs; [
     gnumake
     zlib
