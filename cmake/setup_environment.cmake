@@ -19,13 +19,16 @@ endfunction()
 function(config_compiler)
     message("Configuring compiler...")
 
+    # Callers may pass cmdline flags with -DCMAKE_CXX_FLAGS=... .
+    # This script overwrites CMAKE_CXX_FLAGS_DEBUG and CMAKE_CXX_FLAGS_RELEASE.
+
     if ("${CMAKE_BUILD_TYPE}" STREQUAL "" OR "${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Debug build, no optimizations" FORCE)
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g" CACHE STRING "Debug build flags" FORCE)
+        set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g" CACHE STRING "Debug build flags" FORCE)
         message("Building Debug target. Flags: ${CMAKE_CXX_FLAGS_DEBUG} ${CMAKE_CXX_FLAGS}")
     elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "Enables link time optimization" FORCE)
-        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -g" CACHE STRING "Release build flags" FORCE)
+        set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g" CACHE STRING "Release build flags" FORCE)
         message("Building Release target. Flags: ${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_FLAGS}")
     else ()
         message(FATAL_ERROR "Invalid build type: ${CMAKE_BUILD_TYPE}")
